@@ -25,6 +25,7 @@
     <ItemGroup>
       <ProjectReference Include="..\SIS.Canil.BancoDeDados\SIS.Canil.BancoDeDados.csproj" />
       <ProjectReference Include="..\SIS.Canil.Negocio\SIS.Canil.Negocio.csproj" />
+      <ProjectReference Include="..\SIS.Canil.Servicos\SIS.Canil.Servicos.csproj" />
     </ItemGroup>
 
 </Project>

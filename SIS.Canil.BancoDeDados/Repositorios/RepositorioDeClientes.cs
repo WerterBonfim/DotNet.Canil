@@ -1,13 +1,16 @@
 using System;
+using System.Threading.Tasks;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using SIS.Canil.BancoDeDados.Suporte;
 using SIS.Canil.Negocio;
 using SIS.Canil.Negocio.Colecoes;
+using SIS.Canil.Negocio.Repositorio;
 using B = MongoDB.Driver.Builders<SIS.Canil.Negocio.Colecoes.Cliente>; 
 
 namespace SIS.Canil.BancoDeDados.Repositorios
 {
-    public class RepositorioDeClientes : SuporteDb
+    public class RepositorioDeClientes : SuporteDb, IRepositorioDeClientes
     {
         private readonly IMongoCollection<Cliente> _clientes;
 
@@ -42,6 +45,28 @@ namespace SIS.Canil.BancoDeDados.Repositorios
                 throw new Exception("Ocorreu um erro ao tentar atualizar um cliente", e);
             }
             
+        }
+
+        public void Deletar(ObjectId id)
+        {
+            try
+            {
+                var resultado = _clientes.DeleteOne(x => x.Id == id);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Ocorreu um erro ao tentar deletar um cliente", e);
+            }
+        }
+
+        public Cliente BuscarPorCpf(string cpf)
+        {
+            var cliente = _clientes
+                .Find(B.Filter.Eq(x => x.Cpf, cpf))
+                .FirstOrDefault();
+
+            return cliente;
+
         }
     }
 }

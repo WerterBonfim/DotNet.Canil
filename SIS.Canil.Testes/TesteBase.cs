@@ -1,18 +1,32 @@
-using Bogus.DataSets;
 using Bogus.Extensions.Brazil;
-using FluentAssertions;
+using SIS.Canil.BancoDeDados.Repositorios;
+using SIS.Canil.BancoDeDados.Suporte;
+using SIS.Canil.Negocio.Repositorio;
 using SIS.Canil.Negocio.Requisitos.Cliente;
-using Xunit;
 
-namespace SIS.Canil.Testes.Requisitos
+namespace SIS.Canil.Testes
 {
-    
-    public class ClientesTestes
+    public abstract class TesteBase
     {
-        
-        [Fact(DisplayName = "Registrando um cliente")]
-        [Trait("Requisitos para", "Criar")]
-        public void DeveCadastrarUmClienteComSucesso()
+        protected readonly IRepositorioDeClientes RepositorioDeClientes;
+
+        protected TesteBase()
+        {
+            ConfigurarMongoDbDocker();
+            RepositorioDeClientes = new RepositorioDeClientes();
+        }
+
+        protected void ConfigurarMongoDbDocker()
+        {
+            ConfiguracaoDb.Banco = "canil";
+            ConfiguracaoDb.Host = "localhost";
+            ConfiguracaoDb.Porta = "27017";
+            ConfiguracaoDb.Senha = "!123Senha";
+            ConfiguracaoDb.Usuario = "mongo";
+            ConfiguracaoDb.BancoAutenticancao = "admin";
+        }
+
+        protected RequisitosParaCadastrarCliente GerarUmCliente()
         {
             var fulano = new Bogus.Person("pt_BR");
 
@@ -29,11 +43,9 @@ namespace SIS.Canil.Testes.Requisitos
                 fulano.Address.State
             );
 
-            cliente.EValido().Should().BeTrue(
-                "Porquê todos os dados foram preenchido corretamente pela" +
-                "biblioteca Bogus");
+            return cliente;
         }
-
+        
         private static string NumeroResidencialFake()
         {
             return new Bogus.Randomizer().Number(1, 999).ToString();

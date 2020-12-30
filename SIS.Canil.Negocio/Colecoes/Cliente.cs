@@ -7,14 +7,64 @@ namespace SIS.Canil.Negocio.Colecoes
 {
     public class Cliente
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public Cliente(
+            string nome = null,
+            string sexo = null,
+            string estadoCivil = null,
+            string rg = null,
+            string cpf = null,
+            DateTime dataNascimento = default,
+            string nacionalidade = null,
+            string whatsApp = null,
+            string telefoneFixo = null,
+            string celular = null,
+            string facebook = null,
+            string instagram = null,
+            string observação = null,
+            string localização = null,
+            string endereço = null,
+            string numeroCasa = null,
+            string complemento = null,
+            string bairro = null,
+            string municipio = null,
+            string uf = null
+        )
+        {
+            Nome = nome;
+            Sexo = sexo;
+            EstadoCivil = estadoCivil;
+            RG = rg;
+            Cpf = cpf;
+            DataNascimento = dataNascimento;
+            Nacionalidade = nacionalidade;
+            WhatsApp = whatsApp;
+            TelefoneFixo = telefoneFixo;
+            Celular = celular;
+            Facebook = facebook;
+            Instagram = instagram;
+            Observação = observação;
+            Localização = localização;
+            Endereço = endereço;
+            NumeroCasa = numeroCasa;
+            Complemento = complemento;
+            Bairro = bairro;
+            Municipio = municipio;
+            UF = uf;
+
+            Id = ObjectId.GenerateNewId();
+        }
+
+        public Cliente()
+        {
+            Id = ObjectId.GenerateNewId();
+        }
+
+        public ObjectId Id { get; set; }
         public string Nome { get; set; }
         public string Sexo { get; set; }
         public string EstadoCivil { get; set; }
         public string RG { get; set; }
-        public CPF CPF { get; set; }
+        public string Cpf { get; set; }
         public DateTime DataNascimento { get; set; }
         public string Nacionalidade { get; set; }
         public string WhatsApp { get; set; }

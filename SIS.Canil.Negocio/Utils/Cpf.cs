@@ -2,36 +2,10 @@ using System;
 
 namespace SIS.Canil.Negocio.Utils
 {
-    public class CPF
+    public static class CPF
     {
         public const int QtdMaximaDeCaracteres = 11;
-        public string Numero { get; }
-
-      
-        public CPF()
-        {
-        }
-
-        public CPF(string numeros)
-        {
-            numeros = VerificaOCpf(numeros);
-            Numero = numeros;
-        }
-
         
-
-        private static string VerificaOCpf(string numeros)
-        {
-            var cpfValido = EValido(numeros);
-
-            if (!cpfValido)
-                throw new Exception("CPF inválido");
-
-            numeros = RemoverPontos(numeros);
-
-            return numeros;
-        }
-
         /// <summary>
         ///     Verifica se o Cpf informado é valido.
         /// </summary>

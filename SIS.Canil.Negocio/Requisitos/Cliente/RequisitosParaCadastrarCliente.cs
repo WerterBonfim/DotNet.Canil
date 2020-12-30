@@ -6,16 +6,16 @@ namespace SIS.Canil.Negocio.Requisitos.Cliente
     public class RequisitosParaCadastrarCliente : RequisitosBase
     {
         public RequisitosParaCadastrarCliente(
-            string nome,
-            string sexo,
-            string rg,
-            string cpf,
-            DateTime dataNascimento,
-            string endereço,
-            string numeroCasa,
-            string bairro,
-            string municipio,
-            string uf,
+            string nome = null,
+            string sexo = null,
+            string rg = null,
+            string cpf = null,
+            DateTime dataNascimento = default,
+            string endereço = null,
+            string numeroCasa = null,
+            string bairro = null,
+            string municipio = null,
+            string uf = null,
             string localização = null,
             string complemento = null,
             string estadoCivil = null,
@@ -26,7 +26,6 @@ namespace SIS.Canil.Negocio.Requisitos.Cliente
             string facebook = null,
             string instagram = null,
             string observação = null
-            
         )
         {
             Nome = nome;
@@ -86,62 +85,64 @@ namespace SIS.Canil.Negocio.Requisitos.Cliente
         {
             public ValidacaoParaRegistrarUmCliente()
             {
-                RuleFor(x => x.Nome)
-                    .NotEmpty()
-                    .WithMessage("Nome é um campo obrigatório");
+                // RuleFor(x => x.Nome)
+                //     .NotEmpty()
+                //     .WithMessage("Nome é um campo obrigatório");
 
-                RuleFor(x => x.Sexo)
-                    .NotEmpty()
-                    .WithMessage("Sexo é um campo obrigatório");
-                
-                RuleFor(x => x.RG)
-                    .NotEmpty()
-                    .WithMessage("RG é um campo obrigatório");
-                
-                RuleFor(x => x.Cpf)
-                    .Must(TerCpfValido)
-                    .WithMessage("O CPF informado não é válido.");
-                
-                RuleFor(x => x.DataNascimento)
-                    .NotNull()
-                    .WithMessage("Data é um campo obrigatório")
-                    .GreaterThan(new DateTime(1900, 1, 1))
-                    .WithMessage("Data informada é inválida");
-                
-                RuleFor(x => x.Endereço)
-                    .NotEmpty()
-                    .WithMessage("Endereço é um campo obrigatório");
-                
-                RuleFor(x => x.NumeroCasa)
-                    .NotEmpty()
-                    .WithMessage("NumeroCasa é um campo obrigatório");
-                
-                RuleFor(x => x.Bairro)
-                    .NotEmpty()
-                    .WithMessage("Bairro é um campo obrigatório");
-                
-                RuleFor(x => x.Municipio)
-                    .NotEmpty()
-                    .WithMessage("Municipio é um campo obrigatório");
-                
-                RuleFor(x => x.UF)
-                    .NotEmpty()
-                    .WithMessage("UF é um campo obrigatório");
-                
-                
-                
-                
+                // RuleFor(x => x.Sexo)
+                //     .NotEmpty()
+                //     .WithMessage("Sexo é um campo obrigatório");
+
+                // RuleFor(x => x.RG)
+                //     .NotEmpty()
+                //     .WithMessage("RG é um campo obrigatório");
+
+                When(c => !string.IsNullOrEmpty(c.Cpf), () =>
+                {
+                    RuleFor(x => x.Cpf)
+                        .Must(TerCpfValido)
+                        .WithMessage("O CPF informado não é válido.");
+                });
+
+                When(c => c.DataNascimento != default, () =>
+                {
+                    RuleFor(x => x.DataNascimento)
+                        .GreaterThan(new DateTime(1900, 1, 1))
+                        .WithMessage("Data informada é inválida");
+                });
+
+
+                // RuleFor(x => x.Endereço)
+                //     .NotEmpty()
+                //     .WithMessage("Endereço é um campo obrigatório");
+                //
+                // RuleFor(x => x.NumeroCasa)
+                //     .NotEmpty()
+                //     .WithMessage("NumeroCasa é um campo obrigatório");
+                //
+                // RuleFor(x => x.Bairro)
+                //     .NotEmpty()
+                //     .WithMessage("Bairro é um campo obrigatório");
+                //
+                // RuleFor(x => x.Municipio)
+                //     .NotEmpty()
+                //     .WithMessage("Municipio é um campo obrigatório");
+                //
+                // RuleFor(x => x.UF)
+                //     .NotEmpty()
+                //     .WithMessage("UF é um campo obrigatório");
+
 
                 // RuleFor(x => x.Email)
                 //     .Must(TerEmailValido)
                 //     .WithMessage("O e-mail informado não é valido.");
             }
-            
+
             private static bool TerCpfValido(string cpf)
             {
                 return Utils.CPF.EValido(cpf);
             }
-            
+
             // private static bool TerEmailValido(string email)
             // {
             //     return Core.DomainObjects.Email.Validar(email);
