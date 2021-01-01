@@ -12,6 +12,6 @@ namespace SIS.Canil.Negocio.Repositorio
         void Deletar(ObjectId id);
         Cliente BuscarPorCpf(string cpf);
         Cliente BuscarPorId(string id);
-        IList<Cliente> Listar(FilterDefinition<Cliente> filtro,  int pagina = 1, int qtdPorPagina = 10);
+        IList<Cliente> Listar(FilterDefinition<Cliente> filtro,  int pagina = 0, int qtdPorPagina = 10);
     }
 }

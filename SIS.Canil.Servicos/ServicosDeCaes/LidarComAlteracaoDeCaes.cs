@@ -28,7 +28,7 @@ namespace SIS.Canil.Servicos.ServicosDeCaes
             }
 
             var cao = requisitos.ConverterParaCao(requisitos.Id);
-            var resultado = PersistirDados(() => _repositorioDeCaes.Inserir(cao));
+            var resultado = PersistirDados(() => _repositorioDeCaes.Atualizar(cao));
             return resultado;
         }
 

@@ -82,7 +82,7 @@ namespace SIS.Canil.BancoDeDados.Repositorios
             return cliente;
         }
         
-        public IList<Cliente> Listar(FilterDefinition<Cliente> filtro = null, int pagina = 1, int qtdPorPagina = 10)
+        public IList<Cliente> Listar(FilterDefinition<Cliente> filtro = null, int pagina = 0, int qtdPorPagina = 10)
         {
             try
             {

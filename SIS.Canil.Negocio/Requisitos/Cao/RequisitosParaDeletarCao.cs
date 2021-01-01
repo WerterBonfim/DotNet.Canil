@@ -1,28 +1,29 @@
 using FluentValidation;
+using MongoDB.Bson;
 
 namespace SIS.Canil.Negocio.Requisitos.Cao
 {
-    public class RequisitosParaExcluirCao : RequisitosBase
+    public class RequisitosParaDeletarCao : RequisitosBase
     {
         public string Id { get; set; }
 
-        public RequisitosParaExcluirCao()
+        public RequisitosParaDeletarCao()
         {
             
         }
 
-        public RequisitosParaExcluirCao(string id)
+        public RequisitosParaDeletarCao(string id)
         {
             Id = id;
         }
-        
+
         public override bool EValido()
         {
             ResultadoDaValidacao = new ValidacaoParaDeletarUmCao().Validate(this);
             return ResultadoDaValidacao.IsValid;
         }
         
-        private sealed class ValidacaoParaDeletarUmCao : AbstractValidator<RequisitosParaExcluirCao>
+        private sealed class ValidacaoParaDeletarUmCao : AbstractValidator<RequisitosParaDeletarCao>
         {
             public ValidacaoParaDeletarUmCao()
             {

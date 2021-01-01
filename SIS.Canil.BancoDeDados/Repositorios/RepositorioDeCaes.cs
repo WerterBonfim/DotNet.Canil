@@ -51,11 +51,18 @@ namespace SIS.Canil.BancoDeDados.Repositorios
 
         public Cao BuscarPorId(string id)
         {
+            var objectId = ObjectId.Parse(id);
+            return BuscarPorId(objectId);
+
+        }
+
+        public Cao BuscarPorId(ObjectId id)
+        {
             try
             {
-                var objectId = ObjectId.Parse(id);
+                
                 var cao = Colecao
-                    .Find(x => x.Id == objectId)
+                    .Find(x => x.Id == id)
                     .FirstOrDefault();
 
                 return cao;
@@ -66,7 +73,7 @@ namespace SIS.Canil.BancoDeDados.Repositorios
             }
         }
 
-        public IList<Cao> Listar(FilterDefinition<Cao> filtro = null, int pagina = 1, int qtdPorPagina = 10)
+        public IList<Cao> Listar(FilterDefinition<Cao> filtro = null, int pagina = 0, int qtdPorPagina = 10)
         {
             try
             {
@@ -87,7 +94,7 @@ namespace SIS.Canil.BancoDeDados.Repositorios
                 var cao = Colecao.Find(x => x.Id == objectId)
                     .FirstOrDefault();
 
-                return cao == null;
+                return cao != null;
             }
             catch (Exception e)
             {

@@ -14,7 +14,7 @@ namespace SIS.Canil.BancoDeDados.Repositorios
             Colecao = DefinirColecao<C>(nomeColecao);
         }
 
-        protected IList<C> FiltrarCollecao(FilterDefinition<C> filtro = null, int pagina = 1, int qtdPorPagina = 10)
+        protected IList<C> FiltrarCollecao(FilterDefinition<C> filtro = null, int pagina = 0, int qtdPorPagina = 10)
         {
             var pular = pagina * qtdPorPagina;
             IFindFluent<C, C> filtroFluente = null;

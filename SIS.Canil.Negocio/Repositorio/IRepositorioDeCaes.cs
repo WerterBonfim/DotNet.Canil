@@ -11,7 +11,8 @@ namespace SIS.Canil.Negocio.Repositorio
         void Atualizar(Cao cao);
         void Deletar(ObjectId id);
         Cao BuscarPorId(string id);
-        IList<Cao> Listar(FilterDefinition<Cao> filtro = null,  int pagina = 1, int qtdPorPagina = 10);
+        Cao BuscarPorId(ObjectId id);
+        IList<Cao> Listar(FilterDefinition<Cao> filtro = null,  int pagina = 0, int qtdPorPagina = 10);
         bool Existe(string id);
     }
 }

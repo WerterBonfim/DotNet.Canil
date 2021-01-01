@@ -1,7 +1,6 @@
 using System.Linq;
 using FluentAssertions;
-using FluentValidation.Results;
-using SIS.Canil.Negocio.Conversor;
+using SIS.Canil.Negocio.Colecoes;
 using SIS.Canil.Negocio.Requisitos.Cao;
 using SIS.Canil.Servicos.ServicosDeCaes;
 using Xunit;
@@ -28,18 +27,21 @@ namespace SIS.Canil.Testes.Integracao
         public void DeveAlterarUmCao()
         {
             var requisitosNovoCao = GerarUmCao();
+            CadastrarUmNovoCao(requisitosNovoCao);
+            
             var cao = RepositorioDeCaes.Listar()
                 .FirstOrDefault();
 
             cao.Should()
                 .NotBeNull("foi cadastrado previamente um cão");
-            
+
+            var novaDataDeNascimento = cao.DataDeNascimento.AddDays(1);
             var requisitosParaAlterar = new RequisitosParaAlterarCao(
                 cao.Id.ToString(),
                 // Alterando o nome
                 "TDD",
                 // Alterando o dia de nascimento
-                cao.DataDeNascimento.AddDays(1),
+                novaDataDeNascimento,
                 cao.Sexo,
                 cao.CorDoAnimal,
                 cao.Pedgree,
@@ -50,7 +52,20 @@ namespace SIS.Canil.Testes.Integracao
             
             var resultado = servico.LidarCom(requisitosParaAlterar);
 
-            
+            resultado.Errors
+                .Should()
+                .BeEmpty("todo so dados foram preenchidos");
+
+            var recemAlterado = RepositorioDeCaes.BuscarPorId(cao.Id);
+
+            recemAlterado.Nome
+                .Should()
+                .BeEquivalentTo("TDD");
+
+            recemAlterado.DataDeNascimento
+                .Should()
+                .BeSameDateAs(novaDataDeNascimento);
+
 
         }
 
@@ -58,6 +73,32 @@ namespace SIS.Canil.Testes.Integracao
         {
             var serviço = new LidarComCriacaoDeCaes(RepositorioDeCaes);
             var resultado = serviço.LidarCom(requisitos);
+        }
+
+        [Fact(DisplayName = "Deve excluir um cão com sucesso")]
+        [Trait("Cão", "Deletar")]
+        public void DeveExcluirUmCao()
+        {
+            var novoCao = GerarUmCao();
+            CadastrarUmNovoCao(novoCao);
+
+            var cao = ObterUmCaoDoBancoDeDados();
+            var requisitosDelete = new RequisitosParaDeletarCao(cao.Id.ToString());
+            var servico = new LidarComDeleteDeCaes(RepositorioDeCaes);
+            var resultado = servico.LidarCom(requisitosDelete);
+
+            resultado
+                .Errors
+                .Should()
+                .BeEmpty("foi cadastrad um cão previamente e foi fornecido um id para deletar");
+        }
+
+        private Cao ObterUmCaoDoBancoDeDados()
+        {
+            var cao = RepositorioDeCaes.Listar()
+                .FirstOrDefault();
+            
+            return cao;
         }
     }
 }
