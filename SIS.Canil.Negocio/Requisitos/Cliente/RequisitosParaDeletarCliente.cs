@@ -5,13 +5,13 @@ namespace SIS.Canil.Negocio.Requisitos.Cliente
 {
     public class RequisitosParaDeletarCliente : RequisitosBase
     {
-        public ObjectId Id { get; set; }
+        public string Id { get; set; }
 
         public RequisitosParaDeletarCliente()
         {
         }
 
-        public RequisitosParaDeletarCliente(ObjectId id)
+        public RequisitosParaDeletarCliente(string id)
         {
             Id = id;
         }
@@ -31,10 +31,7 @@ namespace SIS.Canil.Negocio.Requisitos.Cliente
                     .WithMessage("Id informado é inválido");
             }
 
-            private bool TerIdValido(ObjectId id)
-            {
-                return ObjectId.TryParse(id.ToString(), out _);
-            }
+            
         }
     }
 }

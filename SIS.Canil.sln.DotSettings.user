@@ -8,5 +8,7 @@
     &lt;TestId&gt;xUnit::F2E02AB0-D02A-464E-9470-366F2B965DC4::net5.0::SIS.Canil.Testes.Integracao.ClienteTests.DeveDeletarUmClienteComSucesso&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::F2E02AB0-D02A-464E-9470-366F2B965DC4::net5.0::SIS.Canil.Testes.Requisitos.RequisitosClienteTestes&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::F2E02AB0-D02A-464E-9470-366F2B965DC4::net5.0::SIS.Canil.Testes.Integracao.IntegracaoClienteTestes&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::F2E02AB0-D02A-464E-9470-366F2B965DC4::net5.0::SIS.Canil.Testes.Requisitos.RequisitosCaoTestes.DeveCadastrarUmCaoComSucesso&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::F2E02AB0-D02A-464E-9470-366F2B965DC4::net5.0::SIS.Canil.Testes.Integracao.IntegracaoCaoTestes.DeveCadastrarUmCaoComSucesso&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

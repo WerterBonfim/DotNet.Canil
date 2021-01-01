@@ -6,7 +6,11 @@ using Xunit;
 
 namespace SIS.Canil.Testes.Integracao
 {
-    
+ 
+    /// <summary>
+    /// Para rodar corretamente os testes é preciso configurar na classe TesteBase
+    /// a string de conexão com o MongoDB. Estou utilizando o Docker para isso.
+    /// </summary>
     public class IntegracaoClienteTestes : TesteBase
     {
 
@@ -67,7 +71,7 @@ namespace SIS.Canil.Testes.Integracao
 
             var cpf = requisitosParaCadastrarCliente.Cpf;
             var cliente = RepositorioDeClientes.BuscarPorCpf(cpf);
-            var requisitoParaDeletar = new RequisitosParaDeletarCliente(cliente.Id);
+            var requisitoParaDeletar = new RequisitosParaDeletarCliente(cliente.Id.ToString());
             var servicoDeleteCliente = new LidarComDeleteCliente(RepositorioDeClientes);
             var resultado = servicoDeleteCliente.LidarCom(requisitoParaDeletar);
 
@@ -81,20 +85,45 @@ namespace SIS.Canil.Testes.Integracao
         [Trait("Cliente", "Alterar")]
         public void DeveAlterarUmClienteComSucesso()
         {
-            var requisitosParaCadastrarCliente = GerarUmCliente();
+            var novoCliente = GerarUmCliente();
+            CadastrarUmCliente(novoCliente);
 
+            var cliente = RepositorioDeClientes.BuscarPorCpf(novoCliente.Cpf);
+            var requisitoParaAlterar = new RequisitosParaAlterarCliente(
+                cliente.Id.ToString(),
+                cliente.Nome,
+                cliente.Sexo,
+                cliente.RG,
+                cliente.Cpf,
+                cliente.DataNascimento,
+                cliente.Endereço,
+                cliente.NumeroCasa,
+                cliente.Bairro,
+                cliente.Municipio,
+                cliente.UF,
+                cliente.Localização,
+                cliente.Complemento,
+                cliente.EstadoCivil,
+                cliente.Nacionalidade,
+                cliente.WhatsApp,
+                cliente.TelefoneFixo,
+                cliente.Celular,
+                cliente.Facebook,
+                cliente.Instagram,
+                cliente.Observação
+                );
+             var servicoAlterarCliente = new LidarComAlteracaoDeCliente(RepositorioDeClientes);
+             var resultado = servicoAlterarCliente.LidarCom(requisitoParaAlterar);
+            
+            resultado.Errors
+                .Should()
+                .BeEmpty("foi previamente cadastrado um cliente"); 
+        }
+
+        private void CadastrarUmCliente(RequisitosParaCadastrarCliente novoCliente)
+        {
             var servico = new LidarComCriacaoDeCliente(RepositorioDeClientes);
-            servico.LidarCom(requisitosParaCadastrarCliente);
-
-            var cpf = requisitosParaCadastrarCliente.Cpf;
-            var cliente = RepositorioDeClientes.BuscarPorCpf(cpf);
-            // var requisitoParaDeletar = new RequisitosParaAlterarCliente();
-            // var servicoDeleteCliente = new LidarComDeleteCliente(RepositorioDeClientes);
-            // var resultado = servicoDeleteCliente.LidarCom(requisitoParaDeletar);
-            //
-            // resultado.Errors
-            //     .Should()
-            //     .BeEmpty("foi previamente cadastrado um cliente"); 
+            servico.LidarCom(novoCliente);
         }
     }
 }

@@ -1,11 +1,8 @@
 ﻿using System;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using SIS.Canil.Negocio.Utils;
 
 namespace SIS.Canil.Negocio.Colecoes
 {
-    public class Cliente
+    public class Cliente : ColecaoBase
     {
         public Cliente(
             string nome = null,
@@ -27,14 +24,20 @@ namespace SIS.Canil.Negocio.Colecoes
             string complemento = null,
             string bairro = null,
             string municipio = null,
-            string uf = null
-        )
+            string uf = null,
+            string id = null
+        ) : base(id)
         {
             Nome = nome;
             Sexo = sexo;
             EstadoCivil = estadoCivil;
             RG = rg;
-            Cpf = cpf;
+
+            if (!string.IsNullOrEmpty(cpf))
+                Cpf = cpf
+                    .Replace(".", "")
+                    .Replace("-", "");
+            
             DataNascimento = dataNascimento;
             Nacionalidade = nacionalidade;
             WhatsApp = whatsApp;
@@ -51,34 +54,31 @@ namespace SIS.Canil.Negocio.Colecoes
             Municipio = municipio;
             UF = uf;
 
-            Id = ObjectId.GenerateNewId();
         }
 
         public Cliente()
         {
-            Id = ObjectId.GenerateNewId();
         }
 
-        public ObjectId Id { get; set; }
-        public string Nome { get; set; }
-        public string Sexo { get; set; }
-        public string EstadoCivil { get; set; }
-        public string RG { get; set; }
-        public string Cpf { get; set; }
-        public DateTime DataNascimento { get; set; }
-        public string Nacionalidade { get; set; }
-        public string WhatsApp { get; set; }
-        public string TelefoneFixo { get; set; }
-        public string Celular { get; set; }
-        public string Facebook { get; set; }
-        public string Instagram { get; set; }
-        public string Observação { get; set; }
-        public string Localização { get; set; }
-        public string Endereço { get; set; }
-        public string NumeroCasa { get; set; }
-        public string Complemento { get; set; }
-        public string Bairro { get; set; }
-        public string Municipio { get; set; }
-        public string UF { get; set; }
+        public string Nome { get; private set; }
+        public string Sexo { get; private set; }
+        public string EstadoCivil { get; private set; }
+        public string RG { get; private set; }
+        public string Cpf { get; private set; }
+        public DateTime DataNascimento { get; private set; }
+        public string Nacionalidade { get; private set; }
+        public string WhatsApp { get; private set; }
+        public string TelefoneFixo { get; private set; }
+        public string Celular { get; private set; }
+        public string Facebook { get; private set; }
+        public string Instagram { get; private set; }
+        public string Observação { get; private set; }
+        public string Localização { get; private set; }
+        public string Endereço { get; private set; }
+        public string NumeroCasa { get; private set; }
+        public string Complemento { get; private set; }
+        public string Bairro { get; private set; }
+        public string Municipio { get; private set; }
+        public string UF { get; private set; }
     }
 }

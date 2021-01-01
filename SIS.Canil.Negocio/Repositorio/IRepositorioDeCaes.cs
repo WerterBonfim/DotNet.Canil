@@ -1,0 +1,17 @@
+using System.Collections.Generic;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using SIS.Canil.Negocio.Colecoes;
+
+namespace SIS.Canil.Negocio.Repositorio
+{
+    public interface IRepositorioDeCaes 
+    {
+        void Inserir(Cao cao);
+        void Atualizar(Cao cao);
+        void Deletar(ObjectId id);
+        Cao BuscarPorId(string id);
+        IList<Cao> Listar(FilterDefinition<Cao> filtro = null,  int pagina = 1, int qtdPorPagina = 10);
+        bool Existe(string id);
+    }
+}

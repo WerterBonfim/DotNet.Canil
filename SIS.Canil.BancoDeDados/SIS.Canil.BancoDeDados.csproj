@@ -12,4 +12,8 @@
       <ProjectReference Include="..\SIS.Canil.Negocio\SIS.Canil.Negocio.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Repositorios\IRepositorioBase.cs" />
+    </ItemGroup>
+
 </Project>

@@ -1,11 +1,14 @@
 using System;
 using FluentValidation;
+using MongoDB.Bson;
 
 namespace SIS.Canil.Negocio.Requisitos.Cliente
 {
-    public class RequisitosParaCadastrarCliente : RequisitosDoClienteBase
+    public class RequisitosParaAlterarCliente : RequisitosDoClienteBase
     {
-        public RequisitosParaCadastrarCliente(
+        public string Id { get; set; }
+        public RequisitosParaAlterarCliente(
+            string id,
             string nome = null,
             string sexo = null,
             string rg = null,
@@ -28,6 +31,7 @@ namespace SIS.Canil.Negocio.Requisitos.Cliente
             string observação = null
         )
         {
+            Id = id;
             Nome = nome;
             Sexo = sexo;
             EstadoCivil = estadoCivil;
@@ -50,11 +54,24 @@ namespace SIS.Canil.Negocio.Requisitos.Cliente
             UF = uf;
         }
 
-        public RequisitosParaCadastrarCliente()
+        public override bool EValido()
         {
+            if (!base.EValido())
+                return false;
+
+            ResultadoDaValidacao = new ValidacaoParaAtualizarClientes().Validate(this);
+            return ResultadoDaValidacao.IsValid;
         }
         
-        
-        
+        private sealed class ValidacaoParaAtualizarClientes : AbstractValidator<RequisitosParaAlterarCliente>
+        {
+            public ValidacaoParaAtualizarClientes()
+            {
+                RuleFor(x => x.Id)
+                    .Must(TerIdValido);
+            }
+
+            
+        }
     }
 }

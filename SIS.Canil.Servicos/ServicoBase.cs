@@ -5,9 +5,9 @@ namespace SIS.Canil.Servicos
 {
     public abstract class ServicoBase
     {
-        protected ValidationResult ResultadoDaValidacao;
+        protected readonly ValidationResult ResultadoDaValidacao;
 
-        public ServicoBase()
+        protected ServicoBase()
         {
             ResultadoDaValidacao = new ValidationResult();
         }
@@ -29,13 +29,20 @@ namespace SIS.Canil.Servicos
         }
         
 
-        // protected async Task<ValidationResult> PersistirDados(object dados)
-        // {
-        //     var inseriu = await unitOfWork.Commit();
-        //     if (!inseriu)
-        //         AdicionarErro("Houve um erro ao persistir os dados");
-        //
-        //     return ValidationResult;
-        // }
+        protected ValidationResult PersistirDados(Action acao)
+        {
+            try
+            {
+                Console.WriteLine("Vou executar a ação 1");
+                acao();
+            }
+            catch (Exception e)
+            {
+                AdicionarErro("Houve um erro ao persistir os dados");
+                AdicionarErro(e);
+            }
+
+            return ResultadoDaValidacao;
+        }
     }
 }

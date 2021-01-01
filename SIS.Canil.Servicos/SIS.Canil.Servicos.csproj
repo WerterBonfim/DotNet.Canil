@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SIS.Canil.BancoDeDados\SIS.Canil.BancoDeDados.csproj" />
+      <ProjectReference Include="..\SIS.Canil.Negocio\SIS.Canil.Negocio.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentValidation" Version="9.3.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="ServicosDeCliente\LidarComExclusaoDoCliente.cs" />
+    </ItemGroup>
+
+</Project>

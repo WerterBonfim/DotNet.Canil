@@ -1,4 +1,5 @@
 using FluentValidation.Results;
+using MongoDB.Bson;
 using SIS.Canil.Negocio.Repositorio;
 using SIS.Canil.Negocio.Requisitos.Cliente;
 
@@ -18,7 +19,9 @@ namespace SIS.Canil.Servicos.ServicosDeCliente
             if (!requisitos.EValido())
                 return ResultadoDaValidacao;
 
-            _repositorioDeClientes.Deletar(requisitos.Id);
+            var id = ObjectId.Parse(requisitos.Id);
+            
+            _repositorioDeClientes.Deletar(id);
             return ResultadoDaValidacao;
         }
     }
