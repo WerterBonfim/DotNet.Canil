@@ -78,8 +78,11 @@ namespace SIS.Canil.BancoDeDados.Repositorios
         {
             try
             {
-                var caes = FiltrarCollecao(filtro, pagina, qtdPorPagina)
-                    .OrderBy(x => x.Id)
+                var pula = CalcularPaginacao(pagina, qtdPorPagina);
+                var caes = FiltrarCollecao(filtro)
+                    .OrderByDescending(x => x.Id)
+                    .Skip(pula)
+                    .Take(qtdPorPagina)
                     .ToList();
                 
                 return caes;

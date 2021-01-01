@@ -1,18 +1,26 @@
+using System;
 using System.Linq;
+using System.Threading;
 using FluentAssertions;
 using SIS.Canil.Negocio.Requisitos.Cliente;
 using SIS.Canil.Servicos.ServicosDeCliente;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace SIS.Canil.Testes.Integracao
 {
- 
     /// <summary>
     /// Para rodar corretamente os testes é preciso configurar na classe TesteBase
     /// a string de conexão com o MongoDB. Estou utilizando o Docker para isso.
     /// </summary>
     public class IntegracaoClienteTestes : TesteBase
     {
+        private readonly ITestOutputHelper _testOutputHelper;
+
+        public IntegracaoClienteTestes(ITestOutputHelper testOutputHelper)
+        {
+            _testOutputHelper = testOutputHelper;
+        }
 
         [Fact(DisplayName = "Deve registrando um cliente no banco de dados")]
         [Trait("Cliente", "Inserir")]
@@ -27,11 +35,8 @@ namespace SIS.Canil.Testes.Integracao
             resultado.Errors
                 .Should()
                 .BeEmpty();
-
-
-
         }
-        
+
         [Fact(DisplayName = "Deve notificar erro para CPF já cadastrado no banco")]
         [Trait("Cliente", "Inserir")]
         public void DeveNotificarUmErroParaCpfJaCadastrado()
@@ -47,7 +52,7 @@ namespace SIS.Canil.Testes.Integracao
                 .BeEmpty("um novo cliente foi gerado via lib Bogus");
 
             resultado = servico.LidarCom(requisitos);
-            
+
             var erros = resultado.Errors;
 
             erros
@@ -78,7 +83,6 @@ namespace SIS.Canil.Testes.Integracao
             resultado.Errors
                 .Should()
                 .BeEmpty("foi previamente cadastrado um cliente");
-
         }
 
         [Fact(DisplayName = "Deve alterar um cliente com sucesso")]
@@ -111,13 +115,40 @@ namespace SIS.Canil.Testes.Integracao
                 cliente.Facebook,
                 cliente.Instagram,
                 cliente.Observação
-                );
-             var servicoAlterarCliente = new LidarComAlteracaoDeCliente(RepositorioDeClientes);
-             var resultado = servicoAlterarCliente.LidarCom(requisitoParaAlterar);
-            
+            );
+            var servicoAlterarCliente = new LidarComAlteracaoDeCliente(RepositorioDeClientes);
+            var resultado = servicoAlterarCliente.LidarCom(requisitoParaAlterar);
+
             resultado.Errors
                 .Should()
-                .BeEmpty("foi previamente cadastrado um cliente"); 
+                .BeEmpty("foi previamente cadastrado um cliente");
+        }
+
+        [Fact(DisplayName = "Deve listar os 3 ultimos clientes cadastrados")]
+        [Trait("Cliente", "Filtro")]
+        public void DeveListarOsUltimes3ClientesCadastrados()
+        {
+            var clientes = Enumerable.Range(0, 4)
+                .Select(x => GerarUmCliente());
+
+            var servico = new LidarComCriacaoDeCliente(RepositorioDeClientes);
+            foreach (var cliente in clientes)
+            {
+                // simula um delay de 1 segundo
+                Thread.Sleep(TimeSpan.FromSeconds(1));
+                servico.LidarCom(cliente);
+            }
+            
+            var ultimosClientes = RepositorioDeClientes.Listar(qtdPorPagina: 3);
+            var primeiro = ultimosClientes.First();
+            var ultimo = ultimosClientes.Last();
+
+            foreach (var cliente in ultimosClientes)
+                _testOutputHelper.WriteLine(cliente.ToString());
+
+            primeiro.Id.CreationTime
+                .Should()
+                .BeAfter(ultimo.Id.CreationTime);
         }
 
         private void CadastrarUmCliente(RequisitosParaCadastrarCliente novoCliente)

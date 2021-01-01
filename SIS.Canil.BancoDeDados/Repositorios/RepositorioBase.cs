@@ -17,10 +17,8 @@ namespace SIS.Canil.BancoDeDados.Repositorios
         }
 
         
-        protected IEnumerable<C> FiltrarCollecao(Func<C, bool> filtro = null, int pagina = 0, int qtdPorPagina = 10)
+        protected IEnumerable<C> FiltrarCollecao(Func<C, bool> filtro = null)
         {
-            var pular = pagina * qtdPorPagina;
-            
             // Retorna todos
             Func<C, bool> filtroPadrao = x => true;
 
@@ -28,12 +26,14 @@ namespace SIS.Canil.BancoDeDados.Repositorios
                 filtroPadrao = filtro;
 
             var query = Colecao.AsQueryable()
-                .Where(filtroPadrao)
-                .Take(qtdPorPagina)
-                .Skip(pular);
+                .Where(filtroPadrao);
 
             return query;
+        }
 
+        protected int CalcularPaginacao(int pagina = 0, int qtdPorPagina = 10)
+        {
+            return pagina * qtdPorPagina;
         }
         
         

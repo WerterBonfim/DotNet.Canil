@@ -83,7 +83,7 @@ namespace SIS.Canil.Negocio.Colecoes
 
         public override string ToString()
         {
-            return $"{Nome}, {Cpf}";
+            return $"{Nome}, {Cpf}, Cadastrado em {Id.CreationTime}";
         }
     }
 }
