@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
+using MongoDB.Driver;
 using SIS.Canil.BancoDeDados.Repositorios;
 using SIS.Canil.BancoDeDados.Suporte;
+using SIS.Canil.Negocio.Colecoes;
 using SIS.Canil.Negocio.Requisitos.Cliente;
 using SIS.Canil.Servicos.ServicosDeCliente;
 
@@ -27,13 +29,20 @@ namespace SIS.Canil.ConsoleApp
 
             // cadastrando um cliente
             CadastrandoUmCliente();
+
+            BuscarCliente();
         }
+
+        
 
         private static void CadastrandoUmCliente()
         {
+            Console.WriteLine("Cadastrando um cliente qualquer");
+            
             var requisitosParaCadastrarUmCliente = new RequisitosParaCadastrarCliente(
                 // txtNomeCliente.txt ...
-                "Fulano"
+                nome:"Fulano",
+                cpf: "411.660.960-92"
             );
 
             var servico = new LidarComCriacaoDeCliente(new RepositorioDeClientes());
@@ -42,10 +51,26 @@ namespace SIS.Canil.ConsoleApp
                 Console.WriteLine("O cliente foi cadastrado com sucesso");
             else
             {
+                Console.WriteLine("Não foi possivel cadastrar o cliente:");
                 var primeiroErro = resultado.Errors
                     .FirstOrDefault();
                 Console.WriteLine(primeiroErro);
             }
+        }
+        
+        
+        private static void BuscarCliente()
+        {
+            Console.WriteLine("\n");
+            Console.WriteLine("Listando os clientes");
+            
+            var repositorio = new RepositorioDeClientes();
+            //repositorio.Listar(x => x.Nome == "Fulano" );
+            //repositorio.Listar(x => x.Cpf == "41166096092");
+            var clientes = repositorio.Listar();
+            foreach (var cliente in clientes)
+                Console.WriteLine(cliente.ToString());
+            
         }
     }
 }

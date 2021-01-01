@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using SIS.Canil.Negocio.Colecoes;
@@ -73,11 +74,14 @@ namespace SIS.Canil.BancoDeDados.Repositorios
             }
         }
 
-        public IList<Cao> Listar(FilterDefinition<Cao> filtro = null, int pagina = 0, int qtdPorPagina = 10)
+        public IList<Cao> Listar(Func<Cao, bool> filtro = null, int pagina = 0, int qtdPorPagina = 10)
         {
             try
             {
-                var caes = FiltrarCollecao(filtro, pagina, qtdPorPagina);
+                var caes = FiltrarCollecao(filtro, pagina, qtdPorPagina)
+                    .OrderBy(x => x.Id)
+                    .ToList();
+                
                 return caes;
             }
             catch (Exception e)

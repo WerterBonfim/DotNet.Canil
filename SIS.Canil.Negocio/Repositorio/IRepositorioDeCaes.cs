@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -12,7 +13,7 @@ namespace SIS.Canil.Negocio.Repositorio
         void Deletar(ObjectId id);
         Cao BuscarPorId(string id);
         Cao BuscarPorId(ObjectId id);
-        IList<Cao> Listar(FilterDefinition<Cao> filtro = null,  int pagina = 0, int qtdPorPagina = 10);
+        IList<Cao> Listar(Func<Cao, bool> filtro = null,  int pagina = 0, int qtdPorPagina = 10);
         bool Existe(string id);
     }
 }

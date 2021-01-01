@@ -28,7 +28,8 @@ namespace SIS.Canil.Negocio.Utils
 
         private static string RemoverPontos(string cpf)
         {
-            return cpf.Replace(".", "")
+            return cpf
+                .Replace(".", "")
                 .Replace("-", "")
                 .Trim();
         }

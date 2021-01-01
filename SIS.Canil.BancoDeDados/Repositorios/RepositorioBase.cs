@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using SIS.Canil.BancoDeDados.Suporte;
@@ -14,21 +16,24 @@ namespace SIS.Canil.BancoDeDados.Repositorios
             Colecao = DefinirColecao<C>(nomeColecao);
         }
 
-        protected IList<C> FiltrarCollecao(FilterDefinition<C> filtro = null, int pagina = 0, int qtdPorPagina = 10)
+        
+        protected IEnumerable<C> FiltrarCollecao(Func<C, bool> filtro = null, int pagina = 0, int qtdPorPagina = 10)
         {
             var pular = pagina * qtdPorPagina;
-            IFindFluent<C, C> filtroFluente = null;
+            
+            // Retorna todos
+            Func<C, bool> filtroPadrao = x => true;
 
-            filtroFluente = filtro == null ? 
-                Colecao.Find(x => true) : 
-                Colecao.Find(filtro);
+            if (filtro != null)
+                filtroPadrao = filtro;
 
-            var caes = filtroFluente
-                .Limit(qtdPorPagina)
-                .Skip(pular)
-                .ToList();
+            var query = Colecao.AsQueryable()
+                .Where(filtroPadrao)
+                .Take(qtdPorPagina)
+                .Skip(pular);
 
-            return caes;
+            return query;
+
         }
         
         

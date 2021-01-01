@@ -80,5 +80,10 @@ namespace SIS.Canil.Negocio.Colecoes
         public string Bairro { get; private set; }
         public string Municipio { get; private set; }
         public string UF { get; private set; }
+
+        public override string ToString()
+        {
+            return $"{Nome}, {Cpf}";
+        }
     }
 }
