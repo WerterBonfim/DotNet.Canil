@@ -10,6 +10,7 @@ namespace SIS.Canil.Servicos.ServicosDeCliente
     public class LidarComCriacaoDeCliente : ServicoBase, ISolicitacao<RequisitosParaCadastrarCliente>
     {
         private readonly IRepositorioDeClientes _repositorioDeClientes;
+
         public LidarComCriacaoDeCliente(IRepositorioDeClientes repositorioDeClientes)
         {
             _repositorioDeClientes = repositorioDeClientes;
@@ -20,12 +21,8 @@ namespace SIS.Canil.Servicos.ServicosDeCliente
             if (!requisitos.EValido())
                 return requisitos.ResultadoDaValidacao;
 
-            var clienteExiste = _repositorioDeClientes.BuscarPorCpf(requisitos.Cpf);
-            if (clienteExiste != null)
-            {
-                AdicionarErro("Este CPF já está em uso");
+            if (ClienteJaExiste(requisitos))
                 return ResultadoDaValidacao;
-            }
 
             var cliente = new Cliente(
                 requisitos.Nome,
@@ -52,8 +49,21 @@ namespace SIS.Canil.Servicos.ServicosDeCliente
 
             PersistirDados(cliente);
             return ResultadoDaValidacao;
+        }
 
+        private bool ClienteJaExiste(RequisitosParaCadastrarCliente requisitos)
+        {
+            if (requisitos.Cpf == null)
+                return false;
 
+            var clienteExiste = _repositorioDeClientes.BuscarPorCpf(requisitos.Cpf);
+            if (clienteExiste != null)
+            {
+                AdicionarErro("Este CPF já está em uso");
+                return true;
+            }
+
+            return false;
         }
 
         private void PersistirDados(Cliente cliente)

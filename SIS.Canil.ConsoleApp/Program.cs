@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using SIS.Canil.BancoDeDados.Repositorios;
+using SIS.Canil.BancoDeDados.Suporte;
 using SIS.Canil.Negocio.Requisitos.Cliente;
 using SIS.Canil.Servicos.ServicosDeCliente;
 
@@ -13,6 +14,16 @@ namespace SIS.Canil.ConsoleApp
             Console.WriteLine("Sistema DotNet.Canil");
             
             // Seu projeto UI deve referencias as libs: Negocio e Serviço
+
+            // Configurando a string de conexão
+            ConfiguracaoDb.Banco = "canil";
+            ConfiguracaoDb.Host = "localhost";
+            ConfiguracaoDb.Porta = "27017";
+            // Eu configurei essa senha, altere para a senha que você definiu na instalação
+            ConfiguracaoDb.Usuario = "mongo";
+            ConfiguracaoDb.Senha = "!123Senha";
+            
+            ConfiguracaoDb.BancoAutenticancao = "admin";
 
             // cadastrando um cliente
             CadastrandoUmCliente();
